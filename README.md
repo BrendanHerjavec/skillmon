@@ -2,6 +2,15 @@
 
 **52-Week AI Build Challenge · Week 1 — the "Childhood Dreams" build.**
 
+[![CI](https://github.com/BrendanHerjavec/skillmon/actions/workflows/ci.yml/badge.svg)](https://github.com/BrendanHerjavec/skillmon/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/BrendanHerjavec/skillmon)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBrendanHerjavec%2Fskillmon&env=NEXT_PUBLIC_DEMO_MODE&envDescription=Set%20to%20true%20to%20run%20without%20any%20API%20keys)
+
+> **Try it without installing anything:** click *Open in GitHub Codespaces* above — the app builds and runs in your browser, no keys required. Want to build on it? See [CONTRIBUTING.md](CONTRIBUTING.md); adding a monster or a question pack takes one file.
+
 ## The story
 
 As a kid, games let me collect creatures, build worlds, and battle — and I would have done anything to make my monster stronger. SKILLMON is the version of that game that runs on your real life. You pick a skill — Python, UI design, or literally anything you type in — and an AI forges an original creature that embodies it. To level that creature up, you have to pass real quiz battles on the skill, generated adaptively by Claude; wrong answers teach you, streaks hit critical, and work demons like Buggon and Scopecreep stand in your way. Win enough, and you watch your creature evolve on screen — because you actually leveled up first.
@@ -10,10 +19,11 @@ As a kid, games let me collect creatures, build worlds, and battle — and I wou
 
 ```bash
 npm install
+cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. Demo Mode is on by default (`.env.local`) — no API keys, no database, no account needed. Everything falls back to deterministic local content.
+Open http://localhost:3000. Demo Mode is on by default — no API keys, no database, no account needed. Everything falls back to deterministic local content.
 
 ### Auto-demo (no clicking required)
 
@@ -55,4 +65,21 @@ After the win, visit the **Habitat**: your creature wanders its den — pet it, 
 - **`content/`** — starters, 8 arenas with gym-leader personas, work-demon roster
 - **`supabase/schema.sql`** — the week-2+ data model, including the `battle_events` audit trail and `xp_events.source` hook for real-world XP verification (GitHub PRs → Logic XP…)
 
-Judgment calls are logged in [DECISIONS.md](DECISIONS.md).
+Judgment calls are logged in [DECISIONS.md](DECISIONS.md). Architecture rules for AI coding agents are in [CLAUDE.md](CLAUDE.md).
+
+## Build on it
+
+MIT licensed — fork it, remix it, ship your own. The content is deliberately separated from the engine, so the easiest contributions need **one file and no knowledge of the game logic**:
+
+| Want to add… | Edit | Time |
+|---|---|---|
+| A work demon (`Meetingoop`, `Refactorgeist`…) | [`content/enemies.ts`](content/enemies.ts) | 5 min |
+| A question pack for a skill you know | [`lib/ai/fallbackQuestions.ts`](lib/ai/fallbackQuestions.ts) | 15 min |
+| A habitat prop | [`content/decor.ts`](content/decor.ts) | 10 min |
+| An arena + gym leader persona | [`content/arenas.ts`](content/arenas.ts) | 20 min |
+
+Full guide: [CONTRIBUTING.md](CONTRIBUTING.md). Questions are welcome as issues — including "how does this work?" ones.
+
+## License
+
+[MIT](LICENSE) © 2026 Brendan Herjavec. Every creature, enemy, arena, and line of copy is original; this project contains no Pokémon or other franchise IP, and contributions must keep it that way.

@@ -1,0 +1,35 @@
+{
+  "name": "SKILLMON",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+
+  // Install deps and switch Demo Mode on so the app runs with no API keys.
+  "postCreateCommand": "npm install && cp -n .env.example .env.local || true",
+
+  // Auto-start the dev server and pop the preview once the box is ready.
+  "postAttachCommand": {
+    "dev": "npm run dev"
+  },
+
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "SKILLMON",
+      "onAutoForward": "openPreview"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "vitest.explorer"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  }
+}
