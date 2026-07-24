@@ -1,26 +1,255 @@
 @import "tailwindcss";
 
+/* SKILLMON design system v2 — "naturalist field guide".
+   Warm daylight paper, espresso ink, and creatures presented in dark portrait
+   medallions so the 3D renders read as deliberate plates rather than stickers.
+   Replaces the v1 night-arcade/CRT look, which fought the new art. */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* surfaces */
+  --bg: #f7f2ea;          /* warm bone paper */
+  --bg-deep: #ece2d4;     /* recessed warm tone */
+  --panel: #fffdfa;       /* card */
+  --panel-border: #e6dbc9;
+  /* Portrait medallion. Tuned to the generated renders' own studio backdrop so
+     the masked art dissolves into the plate with no visible square. */
+  --plate: #101624;
+
+  /* ink */
+  --text: #241d18;
+  --text-dim: #7d6f63;
+
+  /* skill types — deepened to hold contrast on paper */
+  --logic: #0e9f6e;
+  --logic-soft: #ddf6ec;
+  --craft: #7c3aed;
+  --craft-soft: #ece2ff;
+  --influence: #c2760a;
+  --influence-soft: #fbeecd;
+
+  /* feedback */
+  --hp: #d64545;
+  --xp: #c2760a;
+
+  --shadow-sm: 0 1px 2px rgba(60, 44, 30, 0.06), 0 2px 6px rgba(60, 44, 30, 0.05);
+  --shadow-md: 0 2px 4px rgba(60, 44, 30, 0.06), 0 10px 24px rgba(60, 44, 30, 0.09);
+  --shadow-lg: 0 4px 8px rgba(60, 44, 30, 0.07), 0 24px 48px rgba(60, 44, 30, 0.13);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-panel: var(--panel);
+  --color-panel-border: var(--panel-border);
+  --color-plate: var(--plate);
+  --color-ink: var(--text);
+  --color-dim: var(--text-dim);
+  --color-logic: var(--logic);
+  --color-craft: var(--craft);
+  --color-influence: var(--influence);
+  --color-hp: var(--hp);
+  --color-xp: var(--xp);
+  --font-display: var(--font-display), Georgia, serif;
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--bg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, #fffdf8 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 100% 100%, #f3ead9 0%, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv01";
+  min-height: 100dvh;
+}
+
+/* Fine paper grain — the texture that keeps large flat areas from feeling
+   like an empty div. Replaces v1's CRT scanlines. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-optical-sizing: auto;
+  letter-spacing: -0.015em;
+}
+
+/* Small uppercase label — now letterspaced sans rather than arcade type. */
+.eyebrow {
+  font-family: var(--font-body), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 1.1rem;
+  box-shadow: var(--shadow-md);
+}
+
+/* Dark portrait medallion the creature renders sit inside. */
+.plate {
+  background:
+    radial-gradient(circle at 50% 34%, rgba(255, 255, 255, 0.07) 0%, transparent 58%),
+    linear-gradient(170deg, #17203200 0%, #172032 0%, var(--plate) 58%, #0a0e18 100%);
+  border-radius: 1.25rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    var(--shadow-lg);
+}
+
+/* Text sitting on a dark .plate surface (medallions, vivarium, game fields). */
+.plate-ink { color: #f3ede4; }
+.plate-dim { color: #a79cae; }
+
+:focus-visible {
+  outline: 2px solid var(--logic);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--influence-soft);
+  color: var(--text);
+}
+
+/* ---------------- Motion ---------------- */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes plate-sweep {
+  0% { transform: translateY(-120%); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(120%); opacity: 0; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+@keyframes damage-pop {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { transform: translateY(-14px) scale(1.25); opacity: 1; }
+  100% { transform: translateY(-46px) scale(1); opacity: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-7px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes surge-flash {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes evolve-in {
+  0% { transform: scale(0.4); filter: brightness(0) saturate(0); }
+  60% { transform: scale(1.12); filter: brightness(0) saturate(0); }
+  80% { filter: brightness(2.5) saturate(0.2); }
+  100% { transform: scale(1); filter: brightness(1) saturate(1); }
+}
+
+@keyframes rise-fade {
+  0% { transform: translateY(14px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes press-start-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.25; }
+}
+
+@keyframes drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(6vw, -4vh) scale(1.15); }
+}
+
+@keyframes drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1.1); }
+  50% { transform: translate(-5vw, 5vh) scale(0.95); }
+}
+
+@keyframes drift-c {
+  0%, 100% { transform: translate(0, 0) scale(0.95); }
+  50% { transform: translate(4vw, 6vh) scale(1.1); }
+}
+
+@keyframes mote-rise {
+  0% { transform: translateY(0); opacity: 0; }
+  12% { opacity: var(--mote-alpha, 0.4); }
+  88% { opacity: var(--mote-alpha, 0.4); }
+  100% { transform: translateY(-110vh); opacity: 0; }
+}
+
+@keyframes ring-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes rays-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shockwave {
+  0% { transform: scale(0.2); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+@keyframes trick {
+  0% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-34px) rotate(-12deg); }
+  50% { transform: translateY(0) rotate(10deg); }
+  70% { transform: translateY(-14px) rotate(-4deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+.anim-trick { animation: trick 1.1s ease-in-out; }
+.anim-float { animation: float 4s ease-in-out infinite; }
+.anim-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
+.anim-damage-pop { animation: damage-pop 0.9s ease-out forwards; }
+.anim-shake { animation: shake 0.45s ease-in-out; }
+.anim-rise { animation: rise-fade 0.5s ease-out both; }
+.anim-blink { animation: press-start-blink 1.4s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-float,
+  .anim-pulse-glow,
+  .anim-blink,
+  .anim-shake {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
