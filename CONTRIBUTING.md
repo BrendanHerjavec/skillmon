@@ -99,6 +99,21 @@ CI runs the same three on every PR. Then open the PR with a note on what you cha
 
 ---
 
+## Re-shooting the README screenshots
+
+The images in [`docs/screenshots/`](docs/screenshots) are captured from a real
+production build, so they never drift from the actual UI:
+
+```bash
+npm run build && npm start     # production server — no dev overlay in shots
+npm i -D playwright            # ad hoc; deliberately not a committed dependency
+node scripts/capture-screenshots.mjs
+npm uninstall playwright
+```
+
+The script seeds a demo save (evolved creature, one badge, decorated habitat),
+hides demo-only debug UI, and writes six PNGs. Re-run it after any visual change.
+
 ## Two hard rules
 
 **No Pokémon (or other franchise) IP.** No existing creature names, no soundalikes (nothing ending in `-chu`, no `Poké-` prefix), no copied catchphrases or art. Genre grammar — types, evolutions, gyms, HP bars — is fine; specific expression is not. Everything in this repo is original and it has to stay that way.

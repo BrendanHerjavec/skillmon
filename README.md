@@ -11,9 +11,24 @@
 
 > **Try it without installing anything:** click *Open in GitHub Codespaces* above — the app builds and runs in your browser, no keys required. Want to build on it? See [CONTRIBUTING.md](CONTRIBUTING.md); adding a monster or a question pack takes one file.
 
+![SKILLMON home screen — the creature Pythra on its portrait dais, with XP bar and the arena ladder](docs/screenshots/home.png)
+
 ## The story
 
 As a kid, games let me collect creatures, build worlds, and battle — and I would have done anything to make my monster stronger. SKILLMON is the version of that game that runs on your real life. You pick a skill — Python, UI design, or literally anything you type in — and an AI forges an original creature that embodies it. To level that creature up, you have to pass real quiz battles on the skill, generated adaptively by Claude; wrong answers teach you, streaks hit critical, and work demons like Buggon and Scopecreep stand in your way. Win enough, and you watch your creature evolve on screen — because you actually leveled up first.
+
+## Look around
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/starter.png" alt="Starter select — three creature lines plus a field to invent one from any skill"><br><em><b>Pick a starter</b> — or type any real skill and the AI invents an original creature for it.</em></td>
+    <td width="50%"><img src="docs/screenshots/battle.png" alt="Battle screen — gym leader Lint versus Pythra, with a Python question and a countdown timer"><br><em><b>Battle</b> — real questions on your skill. Streaks hit critical; wrong answers teach.</em></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/habitat.png" alt="Habitat — the creature in a lit vivarium with earned decor and a mood meter"><br><em><b>Habitat</b> — pet it, play mini-games, decorate with props earned from wins.</em></td>
+    <td width="50%"><img src="docs/screenshots/dex.png" alt="Dex — collection grid with discovered creature stages and sealed unknown slots"><br><em><b>Dex</b> — every line you discover, with undiscovered stages sealed.</em></td>
+  </tr>
+</table>
 
 ## Run it
 
