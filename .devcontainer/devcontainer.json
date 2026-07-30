@@ -1,5 +1,5 @@
 {
-  "name": "SKILLMON",
+  "name": "VIVARIA",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
 
   // Install deps and switch Demo Mode on so the app runs with no API keys.
@@ -13,7 +13,7 @@
   "forwardPorts": [3000],
   "portsAttributes": {
     "3000": {
-      "label": "SKILLMON",
+      "label": "VIVARIA",
       "onAutoForward": "openPreview"
     }
   },

@@ -11,7 +11,7 @@
 // - Every cue is short (<1.2s) and mixed low; sound should punctuate the
 //   moment, never cover the narration on a video.
 
-const MUTE_KEY = "skillmon-muted";
+const MUTE_KEY = "vivaria-muted";
 
 let ctx: AudioContext | null = null;
 let master: GainNode | null = null;

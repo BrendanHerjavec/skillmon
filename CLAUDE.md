@@ -5,7 +5,7 @@ Humans: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## What this is
 
-SKILLMON — a creature-collecting RPG where a creature's power comes from real
+VIVARIA — a creature-collecting RPG where a creature's power comes from real
 skills the player learns. Win an AI-generated quiz battle → earn XP → level up
 → evolve. Built demo-first for a public 52-week build series, so **the demo
 path working offline matters more than feature count**.
@@ -64,9 +64,11 @@ These are load-bearing. Breaking them is how this codebase degrades.
 ## Hard constraints
 
 - **Zero Pokémon or other franchise IP.** No existing creature names, no
-  soundalikes (`-chu` endings, `Poké-` prefixes), no copied catchphrases or
-  art. Genre grammar (types, evolutions, gyms, HP bars) is fine; expression
-  must be original.
+  soundalikes (`-mon` or `-chu` endings, `Poké-` prefixes), no copied
+  catchphrases or art. Genre grammar (types, evolutions, gyms, HP bars) is
+  fine; expression must be original. The lineage this game claims is the
+  browser-era **virtual-pet keeper** (habitat, mood, decor, mini-games), not
+  the monster-battler — copy should lean that way.
 - **Never commit secrets.** `.env*` is gitignored except `.env.example`
   (empty placeholders). Don't add keys to code, tests, or prompts —
   image models will happily render a literal string into generated art.

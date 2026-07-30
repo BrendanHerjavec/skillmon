@@ -1,4 +1,4 @@
--- SKILLMON schema (SPEC §8). Demo Mode uses localStorage with the same shape;
+-- VIVARIA schema (SPEC §8). Demo Mode uses localStorage with the same shape;
 -- this schema is ready for magic-link auth + real persistence in Phase 5+.
 
 create table if not exists users (

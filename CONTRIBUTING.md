@@ -1,6 +1,6 @@
-# Contributing to SKILLMON
+# Contributing to VIVARIA
 
-Thanks for being here. SKILLMON is week 1 of a public [52-week AI build challenge](https://github.com/BrendanHerjavec) — everything is MIT licensed, so fork it, remix it, or ship your own version.
+Thanks for being here. VIVARIA is part of a public [52-week AI build challenge](https://github.com/BrendanHerjavec) — everything is MIT licensed, so fork it, remix it, or ship your own version.
 
 **You do not need to understand the game engine to contribute.** The most valuable additions are *content*, and each one lives in a single file.
 
@@ -13,8 +13,8 @@ Thanks for being here. SKILLMON is week 1 of a public [52-week AI build challeng
 **Locally:**
 
 ```bash
-git clone https://github.com/BrendanHerjavec/skillmon.git
-cd skillmon
+git clone https://github.com/BrendanHerjavec/vivaria.git
+cd vivaria
 npm install
 cp .env.example .env.local
 npm run dev

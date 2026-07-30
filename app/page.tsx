@@ -23,7 +23,7 @@ export default function TitleScreen() {
     (full: boolean) => {
       reset();
       startAutopilot(full);
-      setAuto({ caption: "SKILLMON — a creature that levels up when you actually do." });
+      setAuto({ caption: "VIVARIA — a creature that levels up when you actually do." });
     },
     [reset],
   );
@@ -77,13 +77,13 @@ export default function TitleScreen() {
         ))}
       </div>
 
-      <p className="eyebrow anim-rise mb-5">52-week build · week one</p>
+      <p className="eyebrow anim-rise mb-5">a 52-week build</p>
 
       <h1
         className="font-display anim-rise text-center text-6xl font-black leading-[0.95] sm:text-8xl"
         style={{ animationDelay: "0.1s" }}
       >
-        <span style={{ color: "var(--text)" }}>Skill</span>
+        <span style={{ color: "var(--text)" }}>Viv</span>
         <span
           style={{
             background: "linear-gradient(115deg, var(--logic), var(--craft) 52%, var(--influence))",
@@ -92,7 +92,7 @@ export default function TitleScreen() {
             color: "transparent",
           }}
         >
-          mon
+          aria
         </span>
       </h1>
 

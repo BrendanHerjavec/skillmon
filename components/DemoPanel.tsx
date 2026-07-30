@@ -62,7 +62,7 @@ export function DemoPanel() {
               onClick={() => {
                 reset();
                 startAutopilot(full);
-                setAuto({ caption: "SKILLMON — a creature that levels up when you actually do." });
+                setAuto({ caption: "VIVARIA — a creature that levels up when you actually do." });
                 router.push("/");
               }}
             >

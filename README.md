@@ -1,21 +1,21 @@
-# SKILLMON
+# VIVARIA
 
-**52-Week AI Build Challenge · Week 1 — the "Childhood Dreams" build.**
+**From the 52-Week AI Build Challenge — the "Childhood Dreams" build.**
 
-[![CI](https://github.com/BrendanHerjavec/skillmon/actions/workflows/ci.yml/badge.svg)](https://github.com/BrendanHerjavec/skillmon/actions/workflows/ci.yml)
+[![CI](https://github.com/BrendanHerjavec/vivaria/actions/workflows/ci.yml/badge.svg)](https://github.com/BrendanHerjavec/vivaria/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/BrendanHerjavec/skillmon)
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBrendanHerjavec%2Fskillmon&env=NEXT_PUBLIC_DEMO_MODE&envDescription=Set%20to%20true%20to%20run%20without%20any%20API%20keys)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/BrendanHerjavec/vivaria)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FBrendanHerjavec%2Fvivaria&env=NEXT_PUBLIC_DEMO_MODE&envDescription=Set%20to%20true%20to%20run%20without%20any%20API%20keys)
 
 > **Try it without installing anything:** click *Open in GitHub Codespaces* above — the app builds and runs in your browser, no keys required. Want to build on it? See [CONTRIBUTING.md](CONTRIBUTING.md); adding a monster or a question pack takes one file.
 
-![SKILLMON home screen — the creature Pythra on its portrait dais, with XP bar and the arena ladder](docs/screenshots/home.png)
+![VIVARIA home screen — the creature Pythra on its portrait dais, with XP bar and the arena ladder](docs/screenshots/home.png)
 
 ## The story
 
-As a kid, games let me collect creatures, build worlds, and battle — and I would have done anything to make my monster stronger. SKILLMON is the version of that game that runs on your real life. You pick a skill — Python, UI design, or literally anything you type in — and an AI forges an original creature that embodies it. To level that creature up, you have to pass real quiz battles on the skill, generated adaptively by Claude; wrong answers teach you, streaks hit critical, and work demons like Buggon and Scopecreep stand in your way. Win enough, and you watch your creature evolve on screen — because you actually leveled up first.
+As a kid, games let me collect creatures, build worlds, and battle — and I would have done anything to make my monster stronger. VIVARIA is the version of that game that runs on your real life. (A *vivarium* is the enclosure you keep a living thing in; the plural is *vivaria*. This is a pet-keeper's game first — the creature has a habitat, a mood, and a den you decorate — and a battler second.) You pick a skill — Python, UI design, or literally anything you type in — and an AI forges an original creature that embodies it. To level that creature up, you have to pass real quiz battles on the skill, generated adaptively by Claude; wrong answers teach you, streaks hit critical, and work demons like Buggon and Scopecreep stand in your way. Win enough, and you watch your creature evolve on screen — because you actually leveled up first.
 
 ## Look around
 

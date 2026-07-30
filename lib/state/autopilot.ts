@@ -23,7 +23,7 @@ export interface AutopilotState {
   full: boolean;
 }
 
-const KEY = "skillmon-autopilot";
+const KEY = "vivaria-autopilot";
 const IDLE: AutopilotState = {
   active: false,
   caption: "",

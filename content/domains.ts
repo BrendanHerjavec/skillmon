@@ -1,7 +1,7 @@
 import type { SkillType } from "@/lib/game/config";
 
-// Skill domains. Week 1 ships the three live types; the rest are a visible
-// roadmap of where the *type system* expands (SPEC §5: "week 1 = 3; schema
+// Skill domains. Three types are live today; the rest are a visible
+// roadmap of where the *type system* expands (SPEC §5: "start at 3; schema
 // supports more"). This is deliberately about the framework growing, not a
 // fixed content menu — any skill a player types already works today via the
 // custom-creature flow, mapped onto one of the live types.

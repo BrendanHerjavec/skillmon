@@ -9,7 +9,9 @@ import { STARTERS } from "@/content/starters";
 // The shape mirrors the Supabase schema so swapping in real persistence later
 // is a storage change, not a rewrite.
 
-const KEY = "skillmon-save-v1";
+const KEY = "vivaria-save-v1";
+/** Pre-rename key. Read once on load so saves made as SKILLMON survive. */
+const LEGACY_KEY = "skillmon-save-v1";
 
 export function emptySave(): SaveData {
   return {
@@ -44,7 +46,7 @@ function rehydrate(line: CreatureLine): CreatureLine {
 export function loadSave(): SaveData {
   if (typeof window === "undefined") return emptySave();
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(KEY) ?? window.localStorage.getItem(LEGACY_KEY);
     if (!raw) return emptySave();
     const data = JSON.parse(raw) as SaveData;
     if (data.version !== 1) return emptySave();
@@ -72,6 +74,7 @@ export function persistSave(data: SaveData): void {
 export function resetSave(): void {
   if (typeof window === "undefined") return;
   window.localStorage.removeItem(KEY);
+  window.localStorage.removeItem(LEGACY_KEY);
 }
 
 export function adoptCreature(save: SaveData, line: CreatureLine): SaveData {

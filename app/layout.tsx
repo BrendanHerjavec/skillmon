@@ -20,7 +20,7 @@ const body = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "SKILLMON — level up for real",
+  title: "VIVARIA — level up for real",
   description:
     "A creature-collecting RPG where your monster's power comes from real skills you learn. Pass an AI quiz battle, earn XP, evolve.",
 };

@@ -1,4 +1,4 @@
-// Capture README screenshots from a running SKILLMON instance.
+// Capture README screenshots from a running VIVARIA instance.
 //
 //   npm run build && npm start      # production server (no dev overlay)
 //   npm i -D playwright             # not a committed dependency — see below
@@ -65,8 +65,8 @@ const page = await browser.newPage({
 async function seed() {
   await page.goto(BASE, { waitUntil: "domcontentloaded" });
   await page.evaluate((save) => {
-    localStorage.setItem("skillmon-save-v1", JSON.stringify(save));
-    sessionStorage.removeItem("skillmon-autopilot");
+    localStorage.setItem("vivaria-save-v1", JSON.stringify(save));
+    sessionStorage.removeItem("vivaria-autopilot");
   }, DEMO_SAVE);
 }
 
