@@ -46,8 +46,8 @@ The app can play itself, driving the real screens with on-screen narration — l
 
 | URL | What it does |
 |---|---|
-| `/?auto=1` | **90-second film cut** — title → starter → two battles (streak, critical hit) → level 3 → evolution → rests on the evolved hero shot. Measured at 89s. |
-| `/?auto=full` | **Full tour** (~2 min) — everything above, then habitat (petting, decor, a self-playing mini-game) and the Dex. |
+| `/?auto=1` | **Quick demo, ~50s** — title → starter select (including typing a real skill and watching the AI invent a creature for it) → two battles with a streak and a critical hit → level 3 → evolution → rests on the evolved hero shot. |
+| `/?auto=full` | **Full tour, ~70s** — everything above, then the habitat (petting, placing earned decor, a self-playing mini-game) and the Dex. |
 
 Both are also on the title screen as buttons, and in the demo-tools panel. Press **Esc** to take back control at any point. While it runs, the cursor and debug UI are hidden so recordings stay clean.
 

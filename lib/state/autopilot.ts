@@ -72,9 +72,13 @@ export function stopAutopilot(): void {
   emit();
 }
 
-/** Pacing helper — Film Mode stretches every beat so the camera keeps up. */
+/**
+ * Pacing helper. The tour is a highlight reel, not a playthrough — beats are
+ * tuned short so the viewer sees a feature and moves on. Film Mode stretches
+ * everything back out when you need the camera to linger.
+ */
 export function beat(ms: number): number {
-  return Math.round(ms * (FILM_MODE ? 1.3 : 1));
+  return Math.round(ms * (FILM_MODE ? 1.45 : 1));
 }
 
 export function useAutopilot(): AutopilotState {

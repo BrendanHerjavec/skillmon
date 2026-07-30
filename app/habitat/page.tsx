@@ -82,25 +82,25 @@ export default function HabitatPage() {
   // Tour step: pet it, drop in a piece of earned decor, then a mini-game.
   useEffect(() => {
     if (!auto.active) return;
-    setAuto({ caption: "This is its habitat. Pet it, play with it, decorate it." });
+    setAuto({ caption: "Its own room. Pet it, decorate it, play with it." });
     const ts = [
-      setTimeout(() => pet(), beat(1600)),
-      setTimeout(() => pet(), beat(2400)),
-      setTimeout(() => pet(), beat(3200)),
+      setTimeout(() => pet(), beat(900)),
+      setTimeout(() => pet(), beat(1400)),
+      setTimeout(() => pet(), beat(1900)),
       setTimeout(() => {
-        setAuto({ caption: "Decor unlocks by winning — this one came from your first victory." });
+        setAuto({ caption: "Every prop is earned — this one came from your first win." });
         setPlacing("terminal");
-      }, beat(4600)),
-      setTimeout(() => placeItem("terminal", 4), beat(6400)),
+      }, beat(2700)),
+      setTimeout(() => placeItem("terminal", 3), beat(3900)),
       setTimeout(() => {
-        setAuto({ caption: "Mini-games keep its mood up — and a happy creature earns bonus XP in battle." });
+        setAuto({ caption: "Mini-games keep its mood up — a happy creature earns bonus XP." });
         setPlaying(true);
-      }, beat(8200)),
+      }, beat(5000)),
       setTimeout(() => {
         setPlaying(false);
         setAuto({ seenHabitat: true });
         router.push("/home");
-      }, beat(22000)),
+      }, beat(13500)),
     ];
     return () => ts.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps

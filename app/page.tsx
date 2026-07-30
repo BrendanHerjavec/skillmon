@@ -50,7 +50,7 @@ export default function TitleScreen() {
   // Tour step: linger on the logo, then head to starter select.
   useEffect(() => {
     if (!auto.active) return;
-    const t = setTimeout(() => router.push("/starter"), beat(3400));
+    const t = setTimeout(() => router.push("/starter"), beat(2200));
     return () => clearTimeout(t);
   }, [auto.active, router]);
 
@@ -127,7 +127,7 @@ export default function TitleScreen() {
                 beginTour(full);
               }}
             >
-              {full ? "▶▶ Full tour" : "▶▶ Watch 90-second demo"}
+              {full ? "▶▶ Full tour · 70s" : "▶▶ Quick demo · 50s"}
             </button>
           ))}
         </div>

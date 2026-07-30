@@ -21,7 +21,7 @@ export default function DexPage() {
     setAuto({
       caption: "That's the loop: learn something real, prove it, and your creature grows with you.",
     });
-    const t = setTimeout(stopAutopilot, beat(7000));
+    const t = setTimeout(stopAutopilot, beat(5000));
     return () => clearTimeout(t);
   }, [auto.active]);
 

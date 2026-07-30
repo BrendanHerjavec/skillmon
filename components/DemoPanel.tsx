@@ -66,7 +66,7 @@ export function DemoPanel() {
                 router.push("/");
               }}
             >
-              {full ? "▶▶ Full tour" : "▶▶ 90-second demo"}
+              {full ? "▶▶ Full tour · 70s" : "▶▶ Quick demo · 50s"}
             </button>
           ))}
           <button className={btn} onClick={() => grantXp(60)}>+60 XP</button>

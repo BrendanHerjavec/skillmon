@@ -5,7 +5,13 @@
       "name": "skillmon-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "port": 3000,
+      // Nothing here needs port 3000 specifically — the API routes are
+      // same-origin relative paths, and there are no OAuth callbacks or
+      // webhooks. Let the harness pick a free port so a stray `npm start`
+      // (see DECISIONS.md #41) can't block startup. `next dev --turbopack`
+      // has no hardcoded --port, so it honours the assigned PORT env var.
+      "autoPort": true
     }
   ]
 }

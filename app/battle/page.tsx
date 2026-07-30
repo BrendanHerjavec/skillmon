@@ -112,8 +112,12 @@ function BattleScreen() {
     setBattle(createBattle(foeNow.hp, eff));
 
     // Fetch quiz with a hard client timeout; the local bank is always ready.
+    // The auto-demo won't wait — a live Claude round-trip is ~5-7s of dead
+    // air per battle, which is most of a highlight reel's budget. It still
+    // fires the request (so a fast response is used) but bails to the local
+    // bank almost immediately.
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
+    const timer = setTimeout(() => controller.abort(), auto.active ? 1200 : 6000);
     const localBank = () =>
       fallbackQuestions(creature.line.skillName, creature.level, CONFIG.questionsPerBattle).map((q) =>
         shuffleQuestion(q),
@@ -272,12 +276,13 @@ function BattleScreen() {
   }, [battle, creature, foe, arena.number, save, update]);
 
   // Auto-advance quickly after a correct answer; wrong answers wait for the
-  // player to read the explanation.
+  // player to read the explanation. The tour moves faster still.
   useEffect(() => {
     if (phase !== "feedback" || !feedback?.correct) return;
-    const t = setTimeout(continueBattle, 1300 * CONFIG.motionScale);
+    const hold = (auto.active ? 750 : 1300) * CONFIG.motionScale;
+    const t = setTimeout(continueBattle, hold);
     return () => clearTimeout(t);
-  }, [phase, feedback, continueBattle]);
+  }, [phase, feedback, continueBattle, auto.active]);
 
   // Evolution surge sequencing inside the victory overlay.
   const beginEvolution = useCallback(() => {
@@ -295,31 +300,30 @@ function BattleScreen() {
     let t: ReturnType<typeof setTimeout> | undefined;
 
     if (phase === "loading" && creature) {
-      // Turn the quiz round-trip into part of the pitch instead of dead air.
-      setAuto({ caption: `Writing fresh ${creature.line.skillName} questions for this fight…` });
+      setAuto({ caption: `Real ${creature.line.skillName} questions, generated for this fight…` });
     } else if (phase === "intro" && foe) {
       setAuto({ caption: `${foe.name} — "${taunt ?? foe.introLine}"` });
-      t = setTimeout(() => setPhase("question"), beat(3600));
+      t = setTimeout(() => setPhase("question"), beat(2000));
     } else if (phase === "question" && currentQuestion) {
       setAuto({
         caption:
           battle && battle.streak >= CONFIG.critStreak - 1 && battle.streak > 0
             ? "Answer right again for a CRITICAL hit."
-            : "Answer a real question about the skill to attack.",
+            : "Answer a real question on the skill to attack.",
       });
-      t = setTimeout(() => answerQuestion(currentQuestion.a), beat(3200));
+      t = setTimeout(() => answerQuestion(currentQuestion.a), beat(1700));
     } else if (phase === "feedback" && feedback?.critical) {
       setAuto({ caption: "Two in a row — CRITICAL HIT, double damage." });
     } else if (phase === "victory" && victory) {
       if (victory.xpResult.evolved && !showEvolution) {
         setAuto({ caption: `+${victory.breakdown.total} XP · Lv ${victory.xpResult.level} — something is happening…` });
-        t = setTimeout(beginEvolution, beat(4400));
+        t = setTimeout(beginEvolution, beat(2600));
       } else if (!victory.xpResult.evolved) {
         setAuto({ caption: `+${victory.breakdown.total} XP — every win is a visible change.` });
         t = setTimeout(() => {
           setAuto({ battlesDone: auto.battlesDone + 1 });
           router.push("/home");
-        }, beat(5000));
+        }, beat(2600));
       }
     }
 
@@ -333,10 +337,11 @@ function BattleScreen() {
   useEffect(() => {
     if (!auto.active || !evolutionRevealed || !creature) return;
     setAuto({ caption: `${creature.line.stageNames[0]} evolved into ${creature.line.stageNames[creature.stage]}.` });
+    // The one beat that keeps its length — this is the money shot.
     const t = setTimeout(() => {
       setAuto({ battlesDone: auto.battlesDone + 1 });
       router.push("/home");
-    }, beat(6200));
+    }, beat(4200));
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auto.active, evolutionRevealed]);

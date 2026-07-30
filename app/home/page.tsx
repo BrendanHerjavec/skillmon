@@ -38,19 +38,19 @@ export default function HomeScreen() {
             ? `This is ${c.line.stageNames[0]} — its power comes from what you know about ${c.line.skillName}.`
             : `Lv ${c.level}. One more win to evolve.`,
       });
-      t = setTimeout(() => router.push("/battle?arena=1"), beat(3400));
+      t = setTimeout(() => router.push("/battle?arena=1"), beat(2200));
     } else if (!auto.full) {
-      // 90-second film cut: rest on the evolved hero shot and hand back control.
+      // Film cut: rest on the evolved hero shot and hand back control.
       setAuto({
         caption: `${c.line.stageNames[c.stage]}, Lv ${c.level}. You leveled up, so it did too.`,
       });
-      t = setTimeout(stopAutopilot, beat(6000));
+      t = setTimeout(stopAutopilot, beat(4500));
     } else if (!auto.seenHabitat) {
-      setAuto({ caption: "Evolved. Every win also changes where it lives." });
-      t = setTimeout(() => router.push("/habitat"), beat(4200));
+      setAuto({ caption: "Badges, arenas, XP — and a home that grows with it." });
+      t = setTimeout(() => router.push("/habitat"), beat(2600));
     } else {
       setAuto({ caption: "Every creature line you discover is recorded in the Dex." });
-      t = setTimeout(() => router.push("/dex"), beat(3400));
+      t = setTimeout(() => router.push("/dex"), beat(2200));
     }
     return () => clearTimeout(t);
   }, [auto.active, auto.battlesDone, auto.seenHabitat, auto.full, stage, save?.creature, router]);

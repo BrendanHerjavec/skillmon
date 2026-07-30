@@ -23,29 +23,58 @@ export default function StarterSelect() {
     router.push("/home");
   };
 
-  // Tour step: browse the cards, settle on the Logic line, adopt it.
+  // Tour step: flick through the starters, then demo the headline feature —
+  // typing a real skill and having the AI invent a creature for it — before
+  // adopting the Logic line (which has generated art for the rest of the tour).
   useEffect(() => {
     if (!auto.active) return;
-    setAuto({
-      caption: "Pick a starter — or type any real skill and the AI invents an original creature for it.",
-    });
+    setAuto({ caption: "Three starters, each tied to a real skill." });
+
+    const type = (text: string, at: number) =>
+      text.split("").map((_, i) =>
+        setTimeout(() => setCustomSkill(text.slice(0, i + 1)), beat(at + i * 55)),
+      );
+
     const ts = [
-      setTimeout(() => setSelected(STARTERS[2]), beat(1400)),
-      setTimeout(() => setSelected(STARTERS[1]), beat(2400)),
-      setTimeout(() => setSelected(STARTERS[0]), beat(3400)),
-      setTimeout(() => adopt(STARTERS[0]), beat(6000)),
+      setTimeout(() => setSelected(STARTERS[2]), beat(700)),
+      setTimeout(() => setSelected(STARTERS[1]), beat(1300)),
+      setTimeout(() => setSelected(STARTERS[0]), beat(1900)),
+      setTimeout(() => {
+        setSelected(null);
+        setAuto({ caption: "Or type any skill you're actually learning…" });
+      }, beat(2900)),
+      ...type("Kubernetes", 3200),
+      setTimeout(() => {
+        setAuto({ caption: "…and the AI invents an original creature line for it." });
+        createCustom("Kubernetes");
+      }, beat(4100)),
+      setTimeout(
+        () => setAuto({ caption: "For this tour we'll take the Logic starter." }),
+        beat(7600),
+      ),
+      setTimeout(() => adopt(STARTERS[0]), beat(9000)),
     ];
     return () => ts.forEach(clearTimeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auto.active]);
 
-  const createCustom = async () => {
-    const skill = customSkill.trim();
+  /**
+   * Forge a creature from a typed skill. Takes the skill explicitly so the
+   * auto-demo can call it from an effect without capturing a stale
+   * `customSkill` from the mount-time render.
+   */
+  const createCustom = async (skillArg?: string) => {
+    const skill = (skillArg ?? customSkill).trim();
     if (!skill || creating) return;
     setCreating(true);
+    // The tour can't wait on a live Claude round-trip; it falls back to the
+    // deterministic generator, which still invents a real named line + lore.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), auto.active ? 2200 : 12000);
     try {
       const res = await fetch("/api/creature", {
         method: "POST",
+        signal: controller.signal,
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ skill }),
       });
@@ -57,6 +86,7 @@ export default function StarterSelect() {
     } catch {
       // fall through to local generation
     } finally {
+      clearTimeout(timer);
       setCreating(false);
     }
     setSelected(proceduralCreatureLine(skill));
