@@ -331,11 +331,20 @@ export function CreatureSprite({
   stage,
   size = 200,
   className,
+  blend = false,
 }: {
   line: Pick<CreatureLine, "type" | "seed" | "spriteUrls">;
   stage: number;
   size?: number;
   className?: string;
+  /**
+   * Composite onto an already-dark scene (the habitat room, a game field).
+   * The generated renders carry a dark studio backdrop; `screen` blending
+   * makes those near-black pixels drop out so the creature sits *in* the
+   * scene instead of inside a visible square. Leave false on light surfaces,
+   * where screen would wash the art out.
+   */
+  blend?: boolean;
 }) {
   const uid = useId().replace(/[:]/g, "");
   const clamped = Math.max(0, Math.min(2, stage));
@@ -347,8 +356,11 @@ export function CreatureSprite({
   if (url) {
     // Crop closer than v1 so less of the render's baked backdrop shows inside
     // the portrait medallion.
-    const fade =
-      "radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 76%, transparent 88%)";
+    // On a dark scene the mask can be tighter, since screen blending already
+    // dissolves the backdrop; on paper it stays softer to avoid clipping.
+    const fade = blend
+      ? "radial-gradient(circle at 50% 48%, #000 40%, rgba(0,0,0,0.9) 56%, rgba(0,0,0,0.4) 70%, transparent 80%)"
+      : "radial-gradient(circle at 50% 50%, #000 46%, rgba(0,0,0,0.85) 62%, rgba(0,0,0,0.35) 76%, transparent 88%)";
     return (
       <span
         className={className}
@@ -366,6 +378,7 @@ export function CreatureSprite({
             objectFit: "contain",
             maskImage: fade,
             WebkitMaskImage: fade,
+            mixBlendMode: blend ? "screen" : undefined,
             filter: `drop-shadow(0 6px 22px ${PALETTES[line.type].glow})`,
           }}
         />

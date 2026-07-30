@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { STARTERS } from "@/content/starters";
+import { DOMAINS } from "@/content/domains";
 import type { CreatureLine } from "@/lib/game/types";
 import { adoptCreature, mutateSave } from "@/lib/state/save";
 import { beat, setAuto, useAutopilot } from "@/lib/state/autopilot";
@@ -113,6 +114,41 @@ export default function StarterSelect() {
           </ArcadeButton>
         </div>
         {creating && <p className="text-xs text-dim">Summoning an original creature…</p>}
+      </div>
+
+      {/* Skill domains — the type system's roadmap. Any skill works today by
+          mapping onto a live type; these are the domains getting their own. */}
+      <div className="mt-10 w-full max-w-3xl text-center">
+        <p className="eyebrow">skill domains</p>
+        <p className="mx-auto mt-2 max-w-md text-xs leading-relaxed text-dim">
+          Every skill you type maps onto a type. Three are live — more domains get their own
+          creatures, arenas and question banks as the series goes on.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+          {DOMAINS.map((d) => {
+            const live = d.type !== null;
+            const tint = live ? typePalette(d.type!).main : undefined;
+            return (
+              <span
+                key={d.name}
+                title={live ? `${d.name} — ${d.examples}` : `${d.name} — ${d.examples} (coming soon)`}
+                className="rounded-full px-3 py-1.5 text-xs font-semibold"
+                style={
+                  live
+                    ? { color: tint, background: `color-mix(in srgb, ${tint} 12%, transparent)` }
+                    : {
+                        color: "var(--text-dim)",
+                        background: "transparent",
+                        border: "1px dashed var(--panel-border)",
+                        opacity: 0.75,
+                      }
+                }
+              >
+                {live ? d.name : `${d.name} · soon`}
+              </span>
+            );
+          })}
+        </div>
       </div>
 
       {selected && (

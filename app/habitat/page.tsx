@@ -12,29 +12,34 @@ import { CreatureSprite, typePalette } from "@/lib/sprites/CreatureSprite";
 import { DemoPanel } from "@/components/DemoPanel";
 import { MinigameModal } from "@/components/minigames/MinigameModal";
 import { beat, setAuto, useAutopilot } from "@/lib/state/autopilot";
+import { sfx } from "@/lib/audio/sfx";
 
 // The habitat: where an unlocked creature actually lives. Pet it, play with
 // it, decorate its home with props earned from battles — a happy creature
 // (mood ≥ CONFIG.happyMoodMin) fights with an XP bonus.
 
-/** Fixed floor spots for decor, in scene percentages. */
+// Positions are tuned to the generated room art: the floor plane starts around
+// 60% height, so props sit between 66% and 90% and further-back spots (lower
+// y) render smaller. The middle is left clear for the creature.
+// Kept clear of the creature's wander band (x 38–63) so props never hide
+// behind it.
 const SPOTS: { x: number; y: number }[] = [
-  { x: 10, y: 58 },
-  { x: 24, y: 72 },
-  { x: 40, y: 62 },
-  { x: 58, y: 74 },
-  { x: 74, y: 60 },
-  { x: 88, y: 72 },
-  { x: 16, y: 88 },
-  { x: 70, y: 90 },
+  { x: 11, y: 70 },
+  { x: 26, y: 84 },
+  { x: 30, y: 66 },
+  { x: 71, y: 66 },
+  { x: 76, y: 84 },
+  { x: 90, y: 70 },
+  { x: 44, y: 92 },
+  { x: 60, y: 92 },
 ];
 
-/** Anchor points the creature wanders between. */
+/** Anchor points the creature wanders between, all on the floor plane. */
 const ANCHORS: { x: number; y: number }[] = [
-  { x: 30, y: 34 },
-  { x: 52, y: 42 },
-  { x: 68, y: 30 },
-  { x: 42, y: 26 },
+  { x: 38, y: 62 },
+  { x: 52, y: 68 },
+  { x: 63, y: 60 },
+  { x: 47, y: 58 },
 ];
 
 function moodLabel(mood: number): string {
@@ -131,6 +136,7 @@ export default function HabitatPage() {
   const pos = ANCHORS[anchor];
 
   const pet = () => {
+    sfx.pet();
     update((s) => careForCreature(s, 6));
     const bursts = Array.from({ length: 3 }, (_, i) => ({
       id: heartId.current++,
@@ -149,6 +155,7 @@ export default function HabitatPage() {
   /** Place a specific item — takes the id so callers (incl. the auto-demo)
       never depend on the current `placing` selection. */
   const placeItem = (itemId: string, spot: number) => {
+    sfx.place();
     update((s) =>
       careForCreature(
         {
@@ -230,15 +237,33 @@ export default function HabitatPage() {
           the creature render and the glowing decor stay readable. */}
       <div
         className="plate relative mt-5 w-full overflow-hidden"
-        style={{
-          aspectRatio: "2 / 1",
-          backgroundImage: `radial-gradient(ellipse 80% 60% at 50% 108%, ${p.main}33 0%, transparent 62%), radial-gradient(circle at 50% 28%, rgba(255,255,255,0.06) 0%, transparent 55%), linear-gradient(170deg, #172032 0%, #101624 58%, #0a0e18 100%)`,
-        }}
+        style={{ aspectRatio: "16 / 9" }}
       >
-        {/* floor glow */}
+        {/* Painted room backdrop, generated per type by `npm run rooms`.
+            Each render deliberately leaves the centre and floor empty so the
+            creature and its decor composite cleanly on top. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/rooms/${c.line.type}.png`}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          aria-hidden
+        />
+        {/* Vignette + floor haze: pushes the backdrop back so the glossy
+            creature in front reads as the subject. */}
         <div
-          className="absolute inset-x-[8%] bottom-[4%] h-[38%] rounded-[50%]"
-          style={{ background: `radial-gradient(ellipse at 50% 50%, ${p.main}22 0%, transparent 70%)`, border: `1px solid ${p.main}22` }}
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: `radial-gradient(ellipse 70% 55% at 50% 42%, transparent 0%, rgba(6,9,16,0.55) 100%),
+                         linear-gradient(to bottom, rgba(6,9,16,0.35) 0%, transparent 30%, rgba(6,9,16,0.4) 100%)`,
+          }}
+          aria-hidden
+        />
+        {/* warm pool of light the creature stands in */}
+        <div
+          className="pointer-events-none absolute inset-x-[14%] bottom-[6%] h-[34%] rounded-[50%]"
+          style={{ background: `radial-gradient(ellipse at 50% 50%, ${p.main}2e 0%, transparent 70%)` }}
+          aria-hidden
         />
 
         {/* decor */}
@@ -251,9 +276,15 @@ export default function HabitatPage() {
               onClick={() => removeAt(d.spot)}
               title={`${decorById(d.itemId)!.name} — click to put away`}
               className="absolute cursor-pointer transition-transform hover:scale-110"
-              style={{ left: `${spot.x}%`, top: `${spot.y}%`, transform: "translate(-50%, -60%)" }}
+              style={{
+                left: `${spot.x}%`,
+                top: `${spot.y}%`,
+                transform: "translate(-50%, -60%)",
+                // Props further back sit smaller — cheap depth cue.
+                filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.55))",
+              }}
             >
-              <DecorSprite id={d.itemId} size={72} />
+              <DecorSprite id={d.itemId} size={Math.round(58 + (spot.y / 100) * 34)} />
             </button>
           );
         })}
@@ -290,8 +321,20 @@ export default function HabitatPage() {
             transition: "left 2.6s ease-in-out, top 2.6s ease-in-out",
           }}
         >
+          {/* grounding shadow, so the creature stands in the room */}
+          <span
+            className="pointer-events-none absolute left-1/2 -translate-x-1/2 rounded-[50%]"
+            style={{
+              bottom: -14,
+              width: 96,
+              height: 18,
+              background: "radial-gradient(ellipse, rgba(0,0,0,0.55) 0%, transparent 70%)",
+              filter: "blur(3px)",
+            }}
+            aria-hidden
+          />
           <div key={trick} className={trick ? "anim-trick" : "anim-float"}>
-            <CreatureSprite line={c.line} stage={c.stage} size={132} />
+            <CreatureSprite line={c.line} stage={c.stage} size={148} blend />
           </div>
           {/* pet hearts */}
           {hearts.map((h) => (
@@ -333,9 +376,23 @@ export default function HabitatPage() {
               className={`panel flex cursor-pointer flex-col items-center gap-1 p-3 text-center transition-transform hover:scale-105 disabled:cursor-not-allowed ${placed ? "opacity-60" : ""}`}
               style={selected ? { borderColor: "var(--xp)", boxShadow: "0 0 14px #60a5fa55" } : undefined}
             >
-              <div style={unlocked ? undefined : { filter: "brightness(0) opacity(0.35)" }}>
+              {unlocked ? (
                 <DecorSprite id={item.id} size={56} />
-              </div>
+              ) : (
+                // A sealed slot reads better than a silhouetted sprite, which
+                // turns detailed props into grey blobs.
+                <div
+                  className="grid place-items-center rounded-xl"
+                  style={{
+                    width: 56,
+                    height: 56,
+                    background: "var(--bg-deep)",
+                    border: "1px dashed var(--panel-border)",
+                  }}
+                >
+                  <span className="font-display text-lg text-dim/60">?</span>
+                </div>
+              )}
               <span className="text-[11px] leading-tight">{unlocked ? item.name : "???"}</span>
               <span className="text-[10px] leading-tight text-dim">
                 {unlocked ? (placed ? "placed" : selected ? "pick a spot" : "tap to place") : item.unlockHint}

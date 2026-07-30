@@ -3,6 +3,7 @@ import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Atmosphere } from "@/components/Atmosphere";
 import { AutoplayOverlay } from "@/components/AutoplayOverlay";
+import { SoundToggle } from "@/components/SoundToggle";
 
 // Display: a warm, characterful serif — the "field guide" voice.
 const display = Fraunces({
@@ -35,6 +36,7 @@ export default function RootLayout({
         <Atmosphere />
         {children}
         <AutoplayOverlay />
+        <SoundToggle />
       </body>
     </html>
   );

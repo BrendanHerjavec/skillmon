@@ -70,6 +70,8 @@ After the win, visit the **Habitat**: your creature wanders its den — pet it, 
 | `GEMINI_API_KEY` | Nano Banana sprite generation (reference-chained 3-stage evolution art) |
 | Supabase keys | Real persistence via `supabase/schema.sql` (RLS on all tables) |
 
+**Habitat rooms** are generated the same way — `npm run rooms` renders one painted environment per creature type into `public/rooms/`. Committed, so no key is needed at runtime.
+
 **High-res creature art is already generated** and committed under `public/sprites/` — all 9 starter stages as 3D-style renders, served statically with no runtime API cost. To regenerate (e.g. after editing prompts in `scripts/generate-sprites.mjs`), set `GEMINI_API_KEY` and run `npm run sprites`; it re-renders every stage with reference-chaining so each line stays one species, and rewrites `content/generatedSprites.ts`. Creatures with no generated art (custom skills) fall back to the procedural SVG renderer automatically.
 
 ## Architecture

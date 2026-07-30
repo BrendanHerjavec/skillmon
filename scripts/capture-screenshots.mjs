@@ -44,11 +44,13 @@ const DEMO_SAVE = {
       { itemId: "crystal", spot: 5 },
     ],
     mood: 88,
-    lastCare: "2026-07-24T00:00:00.000Z",
+    // Stamped at capture time: mood decays per day since lastCare, so a fixed
+    // past date would shoot a "Gloomy" creature.
+    lastCare: new Date().toISOString(),
     bestScores: { bitcatch: 12, stack: 6 },
   },
   flags: {},
-  createdAt: "2026-07-24T00:00:00.000Z",
+  createdAt: new Date().toISOString(),
 };
 
 const browser = await chromium.launch();
@@ -72,6 +74,7 @@ async function seed() {
 // marketing shots — hide them at capture time rather than rebuilding.
 const HIDE_DEBUG_UI = `
   .fixed.bottom-4.right-4 { display: none !important; }
+  .fixed.bottom-4.left-4 { display: none !important; }
 `;
 
 async function shot(name, path, prepare) {

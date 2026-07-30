@@ -13,6 +13,7 @@ import { fallbackQuestions } from "@/lib/ai/fallbackQuestions";
 import type { BattleState, Question, XpResult } from "@/lib/game/types";
 import { recordMiss, useSave } from "@/lib/state/save";
 import { beat, setAuto, useAutopilot } from "@/lib/state/autopilot";
+import { sfx } from "@/lib/audio/sfx";
 import { ArcadeButton, Bar, HeartRow, TypeBadge } from "@/components/ui";
 import { CreatureSprite, DemonSprite, typePalette } from "@/lib/sprites/CreatureSprite";
 
@@ -190,6 +191,15 @@ function BattleScreen() {
       const correct = choice !== null && choice === currentQuestion.a;
       const result = resolveAnswer(battle, { correct, timedOut: choice === null });
 
+      // Audio punctuation: crit > hit > wrong.
+      if (result.correct) {
+        if (result.critical) sfx.critical();
+        else sfx.hit();
+      } else {
+        sfx.wrong();
+        sfx.hurt();
+      }
+
       setBattle(result.state);
       setFeedback({
         question: currentQuestion,
@@ -218,6 +228,9 @@ function BattleScreen() {
       const breakdown = victoryXp(battle.maxStreak, battle.hearts, advantage, happy);
       const xpResult = applyXp(creature.level, creature.xp, breakdown.total);
       setVictory({ breakdown, xpResult, prevStage: creature.stage, prevLevel: creature.level });
+
+      sfx.victory();
+      if (xpResult.levelsGained > 0) setTimeout(() => sfx.levelUp(), 900);
 
       update((s) => ({
         ...s,
@@ -250,6 +263,7 @@ function BattleScreen() {
           creature: s.creature ? { ...s.creature, losses: s.creature.losses + 1 } : s.creature,
         }));
       }
+      sfx.defeat();
       setPhase("defeat");
     } else {
       setFeedback(null);
@@ -267,6 +281,7 @@ function BattleScreen() {
 
   // Evolution surge sequencing inside the victory overlay.
   const beginEvolution = useCallback(() => {
+    sfx.evolve();
     setShowEvolution(true);
     setTimeout(() => setEvolutionRevealed(true), 1600 * CONFIG.motionScale);
   }, []);
